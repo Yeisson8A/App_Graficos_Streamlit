@@ -1,8 +1,10 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+from charts.charts import porcentaje_cancelacion_genero, porcentaje_cancelacion_pareja, porcentaje_cancelacion_persona_mayor
 from utils.pandas import preprocess_data
 
+# Configuración de página
+st.set_page_config(layout="wide")
 st.title("Gráficos")
 
 # Leer archivos
@@ -18,19 +20,16 @@ dataset = preprocess_data(contract, internet, personal, phone)
 tab1, tab2 = st.tabs(["Análisis Demográfico", "Análisis de Servicios"])
 
 with tab1:
-    fig1 = px.bar(dataset, x="gender", y="Churn", title=f"Porcentaje de cancelación por género", 
-                labels={"gender": "Género", "Churn": "Porcentaje de cancelación"}, 
-                barmode='group')
-    st.plotly_chart(fig1)
+    # Porcentaje de churn por género
+    fig_gender = porcentaje_cancelacion_genero(dataset)
+    st.plotly_chart(fig_gender)
 
-    fig2 = px.bar(dataset, x="SeniorCitizen", y="Churn", title=f"Porcentaje de cancelación por situación de edad", 
-                labels={"SeniorCitizen": "Persona mayor?", "Churn": "Porcentaje de cancelación"}, 
-                barmode='group')
-    st.plotly_chart(fig2)
+    # Porcentaje de churn por senior citizen
+    fig_senior_citizen = porcentaje_cancelacion_persona_mayor(dataset)
+    st.plotly_chart(fig_senior_citizen)
 
-    fig3 = px.bar(dataset, x="Partner", y="Churn", title=f"Porcentaje de cancelación por situación de pareja", 
-                labels={"Partner": "Tiene pareja?", "Churn": "Porcentaje de cancelación"}, 
-                barmode='group')
-    st.plotly_chart(fig3)
+    # Porcentaje de churn por partner
+    fig_partner = porcentaje_cancelacion_pareja(dataset)
+    st.plotly_chart(fig_partner)
 with tab2:
     st.write("Análisis de servicios")

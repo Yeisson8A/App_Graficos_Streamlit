@@ -1,6 +1,8 @@
 import streamlit as st
 from components.card import create_card
 
+# Configuración de página
+st.set_page_config(layout="wide")
 st.title("Proyectos")
 col1, col2 = st.columns([4, 4])
 
